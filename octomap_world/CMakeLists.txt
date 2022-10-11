@@ -4,6 +4,7 @@ project(octomap_world)
 find_package(catkin_simple REQUIRED
             pcl_ros
             pcl_conversions)
+find_package(OpenCV REQUIRED)
 catkin_simple(ALL_DEPS_REQUIRED)
 
 option(USE_OCTOMAP_OMP "Use OMP in Octomap" OFF)
@@ -25,13 +26,19 @@ cs_add_library(${PROJECT_NAME}
   src/octomap_manager.cc
 )
 
+include_directories(
+    ${OpenCV_INCLUDE_DIRS}
+)
+link_directories(
+    ${OpenCV_LIBRARY_DIRS}
+)
 ############
 # BINARIES #
 ############
 cs_add_executable(octomap_manager
   src/octomap_manager_node.cc
 )
-target_link_libraries(octomap_manager ${PROJECT_NAME})
+target_link_libraries(octomap_manager ${PROJECT_NAME} ${OpenCV_LIBS})
 
 ##########
 # EXPORT #
